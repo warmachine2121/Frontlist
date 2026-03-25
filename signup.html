@@ -280,8 +280,8 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
         });
-        if (!cf.ok) throw new Error('Could not create account');
         const jf = await cf.json();
+        if (!cf.ok) throw new Error(jf?.error?.message || jf?.error || 'Could not create account');
 
         window.location.href = `/dashboard/index.html?founder_id=${encodeURIComponent(jf.id)}`;
       } catch (err) {
