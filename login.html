@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login — Waitlist.so</title>
+    <style>body{font-family:system-ui,Arial,Helvetica;margin:2rem;padding:0 1rem;max-width:700px}</style>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <p>Access your founder dashboard.</p>
+
+    <form id="loginForm">
+      <label>Email<br /><input type="email" id="email" required /></label>
+      <label style="display:block;margin-top:.5rem">Password<br /><input type="password" id="password" required /></label>
+      <div style="margin-top:1rem">
+        <button type="submit">Log in</button>
+      </div>
+    </form>
+
+    <script type="module">
+      import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+      await import('/supabase-config.js');
+      const SUPABASE_URL = window.__SUPABASE_URL;
+      const SUPABASE_ANON_KEY = window.__SUPABASE_ANON_KEY;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const form = document.getElementById('loginForm');
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        if (!email || !password) return alert('Email and password are required');
+        try{
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          // Fetch or create founder record on the server
+          const resp = await fetch(`/api/founder?email=${encodeURIComponent(email)}`);
+          let founderId = null;
+          if (resp.ok) {
+            const j = await resp.json();
+            founderId = j.founder && j.founder.id;
+          }
+          if (!founderId) {
+            const cf = await fetch('/api/create-founder', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
+            const jf = await cf.json();
+            founderId = jf.id;
+          }
+          window.location.href = `/dashboard/index.html?founder_id=${encodeURIComponent(founderId)}`;
+        }catch(err){
+          console.error(err);
+          alert(err.message || 'Login error');
+        }
+      });
+    </script>
+  </body>
+</html>

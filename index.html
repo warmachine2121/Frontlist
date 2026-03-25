@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontlist — Waitlist & Prelaunch Pages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700&family=Barlow:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1B4332;--green-mid:#2D6A4F;--green-light:#40916C;--green-pale:#D8F3DC;
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>Frontlist — Waitlist</title>
+      <style>
+        :root{--bg:#0D1F16;--white:#fff;--accent:#E8622A}
+        body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:var(--bg);color:var(--white)}
+        header,footer{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.06)}
+        .container{max-width:1100px;margin:0 auto;padding:48px 24px}
+        .hero{display:flex;gap:40px;align-items:center}
+        .hero-left{flex:1}
+        .hero-right{flex:1;display:flex;justify-content:center}
+        input{padding:12px;border-radius:4px;border:1px solid rgba(255,255,255,.08);background:transparent;color:var(--white)}
+        button{padding:12px 16px;background:var(--accent);border:none;color:var(--white);border-radius:4px;cursor:pointer}
+        .success{display:none;color:#9EE6C9;margin-top:12px}
+        .marquee{padding:12px 0;color:rgba(255,255,255,.6);font-weight:600;letter-spacing:.06em}
+        a{color:inherit}
+      </style>
+    </head>
+    <body>
+      <header>
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="/branding/frontlist-logo.svg" alt="Frontlist" style="height:28px"/>
+          <div style="font-weight:700">Frontlist</div>
+        </div>
+        <div><a href="#join">Join Waitlist</a></div>
+      </header>
+      <main class="container">
+        <section class="hero">
+          <div class="hero-left">
+            <h1 style="font-size:42px;margin:0 0 12px">Build your waitlist. Launch with Frontlist.</h1>
+            <p style="margin:0 0 20px;color:rgba(255,255,255,.7)">Branded prelaunch pages and subscriber tools for founders.</p>
+            <div id="join">
+              <div style="margin-bottom:8px;font-size:.85rem;color:rgba(255,255,255,.6)">Join the founding waitlist</div>
+              <div style="display:flex;gap:8px;max-width:520px">
+                <input id="email" type="email" placeholder="you@company.com" />
+                <button id="join-btn">Reserve Spot</button>
+              </div>
+              <div id="success" class="success">You're on the list — position #<span id="pos">—</span></div>
+            </div>
+          </div>
+          <div class="hero-right">
+            <img src="/branding/frontlist-logo.svg" alt="Frontlist" style="width:60%"/>
+          </div>
+        </section>
+        <div class="marquee">Frontlist • waitlist pages • prelaunch • founder tools</div>
+      </main>
+      <footer>
+        <div>© 2026 Frontlist</div>
+        <div style="color:rgba(255,255,255,.6)">Built for founders</div>
+      </footer>
+      <script>
+        // Small client-side join simulation (replace with real backend call)
+        const btn = document.getElementById('join-btn');
+        btn.addEventListener('click', async ()=>{
+          const email = document.getElementById('email').value.trim();
+          if(!email.includes('@')) return alert('Please enter a valid email');
+          btn.disabled = true; btn.textContent = 'Reserving...';
+          await new Promise(r=>setTimeout(r,700));
+          document.getElementById('pos').textContent = Math.floor(50+Math.random()*500);
+          document.getElementById('success').style.display = 'block';
+          btn.style.display='none';
+        });
+      </script>
+    </body>
+  </html>
+    </footer>
+    <script>
+      // Small client-side join simulation (replace with real backend call)
+      const btn = document.getElementById('join-btn');
+      btn.addEventListener('click', async ()=>{
+        const email = document.getElementById('email').value.trim();
+        if(!email.includes('@')) return alert('Please enter a valid email');
+        btn.disabled = true; btn.textContent = 'Reserving...';
+        await new Promise(r=>setTimeout(r,700));
+        document.getElementById('pos').textContent = Math.floor(50+Math.random()*500);
+        document.getElementById('success').style.display = 'block';
+        btn.style.display='none';
+      });
+    </script>
+  </body>
+</html>
+
+  .hero-sub{font-size:1rem;font-weight:300;color:rgba(255,255,255,.5);line-height:1.75;max-width:400px;margin:.5rem 0 3rem;opacity:0;animation:fadeUp .7s .35s ease forwards}
+
+  .waitlist-box{opacity:0;animation:fadeUp .7s .45s ease forwards;max-width:440px}
+  .waitlist-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:var(--green-light);text-transform:uppercase;margin-bottom:.75rem}
+  .input-row{display:flex}
+  .waitlist-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(64,145,108,.35);border-right:none;border-radius:2px 0 0 2px;padding:.85rem 1.1rem;color:var(--white);font-family:'Barlow',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+  .waitlist-input::placeholder{color:rgba(255,255,255,.2)}
+  .waitlist-input:focus{border-color:var(--green-light)}
+  .waitlist-btn{background:var(--orange);border:none;border-radius:0 2px 2px 0;color:var(--white);font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.85rem 1.3rem;cursor:pointer;transition:background .2s;white-space:nowrap}
+  .waitlist-btn:hover{background:var(--orange-dark)}
+
+  .counter-row{display:flex;align-items:center;gap:1rem;margin-top:1.2rem}
+  .counter-num{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--orange)}
+  .counter-label{font-size:.75rem;color:rgba(255,255,255,.4);line-height:1.5}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green-light);margin-left:auto;animation:livePulse 2s ease-in-out infinite}
+  @keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+  .success-msg{display:none;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--green-light);padding:.9rem 0 0}
+  .success-msg span{color:var(--orange);font-weight:500}
+
+  .hero-right{position:relative;overflow:hidden;background:var(--green)}
+  .hr-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1B4332 0%,#0D2B1F 50%,#0a1a12 100%)}
+  .hero-right-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:2rem;z-index:2}
+  .logo-display{width:min(280px,65%);margin-bottom:3rem;;animation:logoIn 1s .5s ease both}
+  @keyframes logoIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+
+  .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;width:100%;max-width:320px}
+  .spec-cell{background:rgba(27,67,50,.7);border:1px solid rgba(64,145,108,.18);padding:1.1rem 1rem}
+  .spec-val{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;color:var(--orange);display:block;line-height:1}
+  .spec-key{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.18em;color:rgba(64,145,108,.8);text-transform:uppercase;margin-top:.3rem;display:block}
+
+  .terrain-badge{margin-top:1.5rem;background:var(--orange);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:.5rem 1.4rem;border-radius:2px}
+
+  .sl{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(64,145,108,.25),transparent)}
+
+  .marquee-wrap{border-top:1px solid rgba(64,145,108,.15);border-bottom:1px solid rgba(64,145,108,.15);padding:1rem 0;overflow:hidden;white-space:nowrap;background:var(--green)}
+  .marquee-track{display:inline-block;animation:marquee 22s linear infinite}
+  .marquee-track span{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-right:2.5rem}
+  .marquee-track span b{color:var(--orange);font-weight:700}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  .section{max-width:1200px;margin:0 auto;padding:7rem 3rem}
+  .section-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:4rem}
+  .section-num{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:var(--orange);opacity:.8;flex-shrink:0}
+  .section-title{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;text-transform:uppercase;letter-spacing:.02em;color:var(--white)}
+  .section-rule{flex:1;height:1px;background:rgba(64,145,108,.2)}
+
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+  .feature{background:rgba(27,67,50,.25);border:1px solid rgba(64,145,108,.12);padding:2.5rem 2rem;transition:background .3s,border-color .3s}
+  .feature:hover{background:rgba(27,67,50,.55);border-color:rgba(64,145,108,.3)}
+  .feature-num{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:var(--orange);margin-bottom:1.5rem}
+  .feature-title{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--white);margin-bottom:.75rem}
+  .feature-desc{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.75}
+
+  .manifesto{background:var(--green);border-top:1px solid rgba(64,145,108,.2);border-bottom:1px solid rgba(64,145,108,.2);padding:6rem 3rem;text-align:center}
+  .manifesto-inner{max-width:720px;margin:0 auto}
+  .manifesto-quote{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:700;font-style:italic;line-height:1.2;color:var(--white)}
+  .manifesto-quote em{color:var(--orange);font-style:normal}
+  .manifesto-sub{margin-top:1.5rem;font-size:.95rem;color:rgba(255,255,255,.45);line-height:1.7}
+
+  .cta-section{padding:9rem 3rem;text-align:center;position:relative;overflow:hidden}
+  .cta-bg-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Barlow Condensed',sans-serif;font-size:clamp(5rem,14vw,16rem);font-weight:800;text-transform:uppercase;color:transparent;-webkit-text-stroke:1px rgba(64,145,108,.07);pointer-events:none;user-select:none;white-space:nowrap;letter-spacing:-.02em}
+  .cta-eyebrow{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.25em;color:var(--orange);text-transform:uppercase;margin-bottom:1.5rem}
+  .cta-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:800;text-transform:uppercase;letter-spacing:.01em;line-height:1;color:var(--white);margin-bottom:.75rem;position:relative;z-index:1}
+  .cta-title .accent{color:var(--orange);font-style:italic}
+  .cta-sub{font-size:.9rem;color:rgba(255,255,255,.4);margin-bottom:3rem;position:relative;z-index:1}
+  .cta-form{display:flex;justify-content:center;max-width:460px;margin:0 auto;position:relative;z-index:1}
+  .cta-input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(64,145,108,.35);border-right:none;border-radius:2px 0 0 2px;padding:.95rem 1.2rem;color:var(--white);font-family:'Barlow',sans-serif;font-size:.9rem;outline:none}
+  .cta-input::placeholder{color:rgba(255,255,255,.2)}
+  .cta-btn{background:var(--orange);border:none;border-radius:0 2px 2px 0;color:var(--white);font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.95rem 1.5rem;cursor:pointer;transition:background .2s;white-space:nowrap}
+  .cta-btn:hover{background:var(--orange-dark)}
+  .cta-success{display:none;font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.1em;color:var(--green-light);margin-top:1.5rem;position:relative;z-index:1}
+  .cta-success span{color:var(--orange)}
+
+  .founding-perks{display:flex;justify-content:center;gap:2.5rem;margin-top:2.5rem;flex-wrap:wrap;position:relative;z-index:1}
+  .perk{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.35);text-transform:uppercase;display:flex;align-items:center;gap:.5rem}
+  .perk::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--orange);flex-shrink:0}
+
+  footer{background:var(--green);border-top:1px solid rgba(64,145,108,.15);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center}
+  footer img{height:28px;;opacity:.7}
+  .footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:.25rem}
+  .footer-copy{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.15em;color:rgba(255,255,255,.25);text-transform:uppercase}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  @media(max-width:768px){
+    .hero{grid-template-columns:1fr}
+    .hero-right{display:none}
+    nav{padding:1.2rem 1.5rem}
+    .nav-tag{display:none}
+    .hero-left{padding:7rem 1.5rem 4rem}
+    .features-grid{grid-template-columns:1fr}
+    .section{padding:4rem 1.5rem}
+    .manifesto{padding:4rem 1.5rem}
+    .cta-section{padding:5rem 1.5rem}
+    footer{flex-direction:column;gap:1.5rem;text-align:center}
+    .footer-right{align-items:center}
+    .founding-perks{gap:1rem}
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontlist — Waitlist & Prelaunch Pages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,700&family=Barlow:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      :root{
+        --green:#1B4332;--green-mid:#2D6A4F;--green-light:#40916C;--green-pale:#D8F3DC;
+        --orange:#E8622A;--orange-dark:#C04E1E;
+        --white:#FFFFFF;--off-white:#F7F5F0;--dark:#0D1F16;
+      }
+      html{scroll-behavior:smooth}
+      body{background:var(--dark);color:var(--white);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden}
+
+      nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;background:rgba(13,31,22,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(64,145,108,0.15)}
+      .nav-logo img{height:34px;}
+      .nav-tag{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.22em;color:var(--green-light);text-transform:uppercase}
+      .nav-cta{background:var(--orange);color:var(--white);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:.55rem 1.1rem;border:none;border-radius:2px;cursor:pointer;transition:background .2s;text-decoration:none}
+      .nav-cta:hover{background:var(--orange-dark)}
+
+      .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+      .hero-left{display:flex;flex-direction:column;justify-content:center;padding:9rem 3.5rem 5rem 3rem;position:relative;z-index:2;border-right:1px solid rgba(64,145,108,0.12)}
+
+      .eyebrow{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.25em;color:var(--orange);text-transform:uppercase;margin-bottom:1.8rem;display:flex;align-items:center;gap:.8rem}
+      .eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--orange)}
+
+      h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.8rem,6vw,6.5rem);font-weight:800;line-height:.95;text-transform:uppercase;letter-spacing:-.01em;color:var(--white)}
+      h1 .accent{color:var(--orange);font-style:italic}
+      h1 .green-word{color:var(--green-light)}
+
+      .hero-tagline{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1rem,1.5vw,1.3rem);font-weight:400;font-style:italic;color:var(--green-light);letter-spacing:.02em;margin:1.8rem 0 .5rem}
+      .hero-sub{font-size:1rem;font-weight:300;color:rgba(255,255,255,.5);line-height:1.75;max-width:520px;margin:.5rem 0 3rem}
+
+      .waitlist-box{max-width:440px}
+      .waitlist-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:var(--green-light);text-transform:uppercase;margin-bottom:.75rem}
+      .input-row{display:flex}
+      .waitlist-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(64,145,108,.35);border-right:none;border-radius:2px 0 0 2px;padding:.85rem 1.1rem;color:var(--white);font-family:'Barlow',sans-serif;font-size:.9rem;outline:none}
+      .waitlist-btn{background:var(--orange);border:none;border-radius:0 2px 2px 0;color:var(--white);font-family:'DM Mono',monospace;font-size:.62rem;padding:.85rem 1.3rem;cursor:pointer}
+
+      .hero-right{position:relative;overflow:hidden;background:var(--green);display:flex;align-items:center;justify-content:center}
+      .logo-display{width:min(320px,65%);opacity:.9}
+
+      .marquee-wrap{border-top:1px solid rgba(64,145,108,.15);border-bottom:1px solid rgba(64,145,108,.15);padding:1rem 0;overflow:hidden;white-space:nowrap;background:var(--green)}
+      .marquee-track{display:inline-block}
+      .marquee-track span{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:600;color:rgba(255,255,255,.5);margin-right:2.5rem}
+
+      footer{background:var(--green);border-top:1px solid rgba(64,145,108,.15);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center}
+      footer img{height:28px;opacity:.8}
+
+      @media(max-width:768px){
+        .hero{grid-template-columns:1fr}
+        .hero-right{display:none}
+        nav{padding:1.2rem 1.5rem}
+        .hero-left{padding:7rem 1.5rem 4rem}
+      }
+    </style>
+  </head>
+  <body>
+
+    <nav>
+      <div class="nav-logo"><img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAJTA0kDASIAAhEBAxEB/8QAHQABAAMBAQEBAQEAAAAAAAAAAAcICQYFBAMBAv/EAFMQAQABAwICBAkHBwkFBgcBAAABAgMEBQYHEQgSGCETMUFUYZSV0dMVIlFVVldxCRQWMmKBkRdCUnKCkpOh1CMkorHBMzRDc4OyJjVjdIWz0sP/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAWEQEBAQAAAAAAAAAAAAAAAAAAEQH/2gAMAwEAAhEDEQA/ALlgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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..." alt="Frontlist"></div>
+      <div class="nav-tag">Waitlist & Prelaunch</div>
+      <a class="nav-cta" href="#join">Join Waitlist</a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-left">
+        <div class="eyebrow">Early Access — 2026</div>
+        <h1>Launch<br>with <span class="accent">Frontlist</span></h1>
+        <p class="hero-tagline">Branded waitlist pages you can ship in minutes.</p>
+        <p class="hero-sub">Collect signups, manage subscribers, and launch with confidence. Frontlist helps founders run coordinated prelaunch campaigns.</p>
+
+        <div class="waitlist-box" id="join">
+          <div class="waitlist-label">Join the founding waitlist</div>
+          <div class="input-row" id="hero-form-row">
+            <input class="waitlist-input" type="email" id="hero-email" placeholder="your@email.com">
+            <button class="waitlist-btn" id="hero-btn">Reserve Spot</button>
+          </div>
+          <div class="success-msg" id="hero-success">You're on the list — <span>position #<span id="hero-pos">—</span></span>. We'll be in touch.</div>
+          <div style="margin-top:1rem;font-size:.9rem;color:rgba(255,255,255,.45)">Join now — limited founding spots available.</div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="logo-display">
+          <img src="/branding/frontlist-logo.svg" alt="Frontlist" style="width:100%" />
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee-wrap" aria-hidden>
+      <div class="marquee-track">
+        <span><b>Frontlist</b> • early access</span>
+        <span>waitlist pages • email capture</span>
+        <span>product-led launches</span>
+        <span>founder tools</span>
+        <span><b>Frontlist</b> • founder-first</span>
+      </div>
+    </div>
+
+    <footer>
+      <img src="/branding/frontlist-logo.svg" alt="Frontlist" />
+      <div class="footer-right">
+        <div class="footer-copy">Built for founders</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.35)">© 2026 Frontlist</div>
+      </div>
+    </footer>
+
+    <script>
+      // Minimal waitlist UI: simulate position and show success UI.
+      function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+
+      async function joinWaitlist(source='hero'){
+        const email = document.getElementById(source+'-email').value.trim();
+        const btn = document.getElementById(source+'-btn');
+        if(!email || !email.includes('@')){ alert('Please enter a valid email'); return }
+        if(btn) btn.disabled = true, btn.textContent = 'Reserving...';
+        try{
+          // In the real app this would call your backend / supabase endpoint.
+          // Here we simulate a successful join with a random position.
+          await new Promise(r=>setTimeout(r,800));
+          const count = randInt(50,400);
+          document.getElementById(source+'-pos').textContent = count;
+          document.getElementById(source+'-success').style.display = 'block';
+          if(btn) btn.style.display = 'none';
+        }catch(e){
+          console.error(e);
+          if(btn){ btn.disabled=false; btn.textContent='Reserve Spot' }
+        }
+      }
+
+      document.getElementById('hero-btn').addEventListener('click',()=>joinWaitlist('hero'));
+      document.querySelectorAll('input[type="email"]').forEach(i=>{
+        i.addEventListener('keydown',e=>{ if(e.key==='Enter') joinWaitlist(i.id.replace('-email','')); });
+      });
+    </script>
+
+  </body>
+  </html>

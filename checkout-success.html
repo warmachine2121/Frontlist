@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Finalizing your subscription — Waitlist.so</title>
+    <style>
+      body{font-family:system-ui,Arial,Helvetica;margin:2rem;padding:0 1rem;max-width:720px}
+      .status{padding:1rem;border-radius:8px;border:1px solid #eee;background:#fafafa}
+      .spinner{display:inline-block;border:3px solid #f3f3f3;border-top:3px solid #1B4332;border-radius:50%;width:18px;height:18px;animation:spin 1s linear infinite;margin-right:.5rem}
+      @keyframes spin{to{transform:rotate(360deg)}}
+    </style>
+  </head>
+  <body>
+    <h1>Finishing up...</h1>
+    <p class="status" id="statusBox"><span class="spinner"></span>Waiting for confirmation of your subscription. This usually takes a few seconds.</p>
+
+    <p>If this takes longer than a minute the payment may be processing — check your email for a receipt. You will be redirected to the dashboard once your subscription is active.</p>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+      const statusBox = document.getElementById('statusBox');
+      if (!sessionId) {
+        statusBox.innerHTML = 'No session id found in URL.';
+      } else {
+        let attempts = 0;
+        const maxAttempts = 30; // ~60 seconds (2s interval)
+
+        async function checkStatus(){
+          attempts++;
+          statusBox.innerHTML = '<span class="spinner"></span>Checking payment status...';
+          try{
+            const res = await fetch(`/api/checkout-session-status?session_id=${encodeURIComponent(sessionId)}`);
+            if (!res.ok) throw new Error('Status check failed');
+            const data = await res.json();
+            const plan = data.founder?.plan || null;
+            if (plan && plan !== 'pending'){
+              // Success — redirect to dashboard
+              statusBox.innerHTML = 'Subscription active! Redirecting...';
+              setTimeout(()=>{
+                // Optionally pass founder id to dashboard
+                const fid = data.founder?.id;
+                window.location = fid ? `/dashboard?founder_id=${fid}` : '/dashboard';
+              }, 800);
+              return;
+            }
+
+            // If still pending and we have attempts left, poll again
+            if (attempts < maxAttempts){
+              setTimeout(checkStatus, 2000);
+            } else {
+              statusBox.innerHTML = 'Still waiting — please check your email for a receipt. If payment succeeded, your account will be active shortly.';
+            }
+          }catch(err){
+            console.error(err);
+            if (attempts < maxAttempts) setTimeout(checkStatus, 2000);
+            else statusBox.innerHTML = 'Error checking subscription status. Try refreshing this page.';
+          }
+        }
+
+        checkStatus();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pricing — Waitlist.so</title>
+    <style>
+      body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;max-width:760px;margin:3rem auto;padding:0 1rem}
+      .plan{border:1px solid #e6e6e6;padding:1rem;border-radius:8px;margin-bottom:1rem}
+      .cta{display:inline-block;padding:.6rem 1rem;background:#1b4332;color:white;border-radius:6px;text-decoration:none}
+    </style>
+  </head>
+  <body>
+    <h1>Pricing</h1>
+    <p>Simple subscription plans for Waitlist.so.</p>
+
+    <div class="plan">
+      <h2>Free</h2>
+      <p>Up to 100 signups</p>
+      <a class="cta" href="#">Start for free</a>
+    </div>
+
+    <div class="plan">
+      <h2>Pro — $19 / month</h2>
+      <p>Unlimited signups, custom slug, logo upload, email notifications</p>
+      <!-- Email capture + button that calls the serverless function to create a Checkout session -->
+      <div style="margin-top:.5rem">
+        <label style="font-size:.9rem">Email for account<br /><input id="buyer-email" type="email" placeholder="you@startup.com" style="padding:.4rem;border:1px solid #ddd;border-radius:6px;width:100%" required></label>
+      </div>
+      <a class="cta" id="stripe-link" href="#" style="margin-top: .75rem; display:inline-block">Buy Pro ($19/mo)</a>
+    </div>
+
+    <div class="plan">
+      <h2>Growth — $49 / month</h2>
+      <p>Custom domain, analytics, referral tracking</p>
+      <a class="cta" href="#">Buy Growth ($49/mo)</a>
+    </div>
+
+    <p style="margin-top:2rem;font-size:.9rem;color:#555">Note: The Pro button will create a Stripe Checkout session via a serverless function when deployed. Locally, run with environment vars set.</p>
+
+    <script>
+      document.getElementById('stripe-link').addEventListener('click', async function(e){
+        e.preventDefault();
+        const btn = e.currentTarget;
+        btn.textContent = 'Redirecting...';
+        btn.style.pointerEvents = 'none';
+        try {
+              const email = document.getElementById('buyer-email').value;
+              if (!email) throw new Error('Please enter your email');
+
+              const res = await fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+              });
+          if (!res.ok) throw new Error('Failed to create checkout session');
+          const data = await res.json();
+          if (data.url) {
+            window.location = data.url;
+          } else {
+            throw new Error(data.error?.message || 'No session URL returned');
+          }
+        } catch (err) {
+          alert('Error creating Stripe Checkout session: ' + err.message);
+          btn.textContent = 'Buy Pro ($19/mo)';
+          btn.style.pointerEvents = '';
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/:slug([a-z0-9][a-z0-9-]*)",
+      "destination": "/api/waitlist-page?slug=:slug"
+    }
+  ]
+}

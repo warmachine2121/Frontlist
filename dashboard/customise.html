@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Customise Project — Dashboard</title>
+    <style>
+      body{font-family:system-ui,Arial,Helvetica;margin:2rem;padding:0 1rem;max-width:840px}
+      label{display:block;margin-top:12px}
+      input[type=text]{width:100%;padding:8px;border-radius:4px;border:1px solid #ddd}
+      .row{display:flex;gap:12px}
+      .col{flex:1}
+      button{margin-top:12px;padding:10px 14px;background:#1B4332;color:#fff;border:none;border-radius:4px}
+      .msg{margin-top:12px}
+    </style>
+  </head>
+  <body>
+    <h1>Customise your waitlist page</h1>
+    <div id="content">
+      <p>Loading…</p>
+    </div>
+
+    <script type="module">
+      // small client to fetch founder -> projects and update the chosen project
+      await import('/supabase-config.js');
+      const params = new URLSearchParams(window.location.search);
+      const founderId = params.get('founder_id');
+      const content = document.getElementById('content');
+      if (!founderId) {
+        content.innerHTML = '<p>No founder context. Please <a href="/login.html">log in</a> or open the dashboard with ?founder_id=...</p>';
+        throw new Error('no founder_id');
+      }
+
+      async function load(){
+        content.innerHTML = '<p>Loading projects…</p>';
+        const res = await fetch(`/api/founder?id=${encodeURIComponent(founderId)}`);
+        if (!res.ok) return content.innerHTML = '<p>Could not load projects.</p>';
+        const j = await res.json();
+        const projects = j.projects || [];
+        if (projects.length === 0) return content.innerHTML = '<p>No projects found for this founder.</p>';
+        const p = projects[0];
+        renderForm(p);
+      }
+
+      function renderForm(project){
+        content.innerHTML = `
+          <form id="projForm">
+            <label>Project title<input type="text" name="title" value="${escapeHtml(project.title||'')}" /></label>
+            <label>Slug (used in URL)
+              <input id="slug-input" type="text" name="slug" value="${escapeHtml(project.slug||'')}" />
+              <div style="font-size:.9rem;color:#999;margin-top:6px"><small id="slug-msg"></small></div>
+            </label>
+            <div class="row">
+              <div class="col"><label>Primary color<input type="text" name="primary_color" value="${escapeHtml(project.primary_color||'#1B4332')}" /></label></div>
+              <div class="col"><label>Accent color<input type="text" name="accent_color" value="${escapeHtml(project.accent_color||'#E8622A')}" /></label></div>
+            </div>
+            <label>Logo
+              <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+                <input id="logo-file" type="file" accept="image/*" />
+                <button id="upload-logo-btn" type="button">Upload logo</button>
+              </div>
+              <div style="margin-top:8px"><img id="logo-preview" src="${escapeHtml(project.logo_url||'')}" alt="logo" style="max-height:64px;display:${project.logo_url ? 'block' : 'none'};" /></div>
+              <div style="font-size:.9rem;color:#999;margin-top:6px"><small id="logo-msg"></small></div>
+            </label>
+            <button id="save-btn" type="submit">Save</button>
+            <div class="msg" id="msg"></div>
+          </form>
+        `;
+        const form = document.getElementById('projForm');
+        form.addEventListener('submit', async (e)=>{
+          e.preventDefault();
+          const f = new FormData(form);
+          const body = { project_id: project.id, title: f.get('title'), slug: f.get('slug'), primary_color: f.get('primary_color'), accent_color: f.get('accent_color') };
+          const msg = document.getElementById('msg');
+          msg.textContent = 'Saving…';
+          try{
+            // include the user's Supabase access token for server-side ownership verification
+            const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+            await import('/supabase-config.js');
+            const supabase = createClient(window.__SUPABASE_URL, window.__SUPABASE_ANON_KEY);
+            const s = await supabase.auth.getSession();
+            const token = s?.data?.session?.access_token;
+            if (!token) return msg.textContent = 'You must be logged in to save changes.';
+            const r = await fetch('/api/update-project', { method: 'POST', headers: {'Content-Type':'application/json','Authorization': `Bearer ${token}`}, body: JSON.stringify(body) });
+            const j = await r.json();
+            if (!r.ok) {
+              // show server error message if present
+              msg.textContent = j?.error || j?.message || 'Update failed';
+            } else {
+              msg.textContent = 'Saved.';
+            }
+          }catch(err){
+            console.error(err);
+            msg.textContent = 'Error saving project.';
+          }
+        });
+
+        // Client-side slug validation + debounced availability check
+        const slugInput = document.getElementById('slug-input');
+        const slugMsg = document.getElementById('slug-msg');
+        const saveBtn = document.getElementById('save-btn');
+        let slugTimer = null;
+        function setInvalid(text){ slugMsg.style.color = '#E35D5D'; slugMsg.textContent = text; saveBtn.disabled = true; }
+        function setValid(text){ slugMsg.style.color = '#7FBF9A'; slugMsg.textContent = text; saveBtn.disabled = false; }
+
+        slugInput.addEventListener('input', ()=>{
+          const val = slugInput.value.trim().toLowerCase();
+          slugInput.value = val;
+          slugMsg.textContent = '';
+          saveBtn.disabled = true;
+          if (slugTimer) clearTimeout(slugTimer);
+          slugTimer = setTimeout(async ()=>{
+            // basic format validation
+            if (!/^[a-z0-9-]+$/.test(val)) {
+              if (val.length === 0) { slugMsg.textContent = ''; return; }
+              return setInvalid('Slug may only contain lowercase letters, numbers and hyphens');
+            }
+            // call server check-slug, ignore our own project id
+            try{
+              const q = new URLSearchParams({ slug: val, project_id: project.id });
+              const res = await fetch('/api/check-slug?'+q.toString());
+              const j = await res.json();
+              if (!res.ok) {
+                setInvalid(j?.reason || 'Could not validate slug');
+                return;
+              }
+              if (j.available) {
+                setValid('Slug available');
+              } else {
+                setInvalid(j.reason || 'Slug not available');
+              }
+            }catch(err){
+              console.error(err);
+              setInvalid('Could not validate slug');
+            }
+          }, 500);
+        });
+
+        // Logo upload handler
+        const logoFile = document.getElementById('logo-file');
+        const uploadBtn = document.getElementById('upload-logo-btn');
+        const logoMsg = document.getElementById('logo-msg');
+        const logoPreview = document.getElementById('logo-preview');
+        uploadBtn.addEventListener('click', async ()=>{
+          const f = logoFile.files && logoFile.files[0];
+          if (!f) return logoMsg.textContent = 'Choose a file first.';
+          logoMsg.textContent = 'Uploading…';
+          try{
+            const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+            await import('/supabase-config.js');
+            const supabase = createClient(window.__SUPABASE_URL, window.__SUPABASE_ANON_KEY);
+            const ext = f.name.split('.').pop();
+            const path = `${project.id}/logo-${Date.now()}.${ext}`;
+            const up = await supabase.storage.from('logos').upload(path, f, { upsert: true });
+            if (up.error) throw up.error;
+            const pub = supabase.storage.from('logos').getPublicUrl(path);
+            const publicUrl = pub?.data?.publicUrl || '';
+            if (!publicUrl) throw new Error('Could not get public URL');
+            // update project's logo_url via server endpoint (authenticated)
+            const s = await supabase.auth.getSession();
+            const token = s?.data?.session?.access_token;
+            if (!token) return logoMsg.textContent = 'You must be logged in to upload.';
+            const r = await fetch('/api/update-project', { method: 'POST', headers: {'Content-Type':'application/json','Authorization': `Bearer ${token}`}, body: JSON.stringify({ project_id: project.id, logo_url: publicUrl }) });
+            const jr = await r.json();
+            if (!r.ok) {
+              logoMsg.textContent = jr?.error || 'Could not save logo URL';
+              return;
+            }
+            logoMsg.textContent = 'Uploaded and saved.';
+            logoPreview.src = publicUrl;
+            logoPreview.style.display = 'block';
+          }catch(err){
+            console.error(err);
+            logoMsg.textContent = err.message || 'Upload failed';
+          }
+        });
+      }
+
+      function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+      load();
+    </script>
+  </body>
+</html>
+

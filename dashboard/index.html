@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard — Waitlist.so</title>
+    <style>
+      body{font-family:system-ui,Arial,Helvetica;margin:2rem;padding:0 1rem;max-width:1000px}
+      nav a{margin-right:1rem}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Founder Dashboard</h1>
+      <nav>
+        <a href="customise.html">Customise</a>
+        <a href="signups.html">Signups</a>
+        <a href="notifications.html">Notifications</a>
+        <a href="billing.html">Billing</a>
+      </nav>
+    </header>
+
+    <section>
+      <h2>Overview</h2>
+      <div id="overview">
+        <p>Loading founder information…</p>
+      </div>
+      <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+        await import('/supabase-config.js');
+        const SUPABASE_URL = window.__SUPABASE_URL;
+        const SUPABASE_ANON_KEY = window.__SUPABASE_ANON_KEY;
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        (async function(){
+          const params = new URLSearchParams(window.location.search);
+          let founderId = params.get('founder_id');
+          const overview = document.getElementById('overview');
+          if (!founderId){
+            // Try to resolve from authenticated session
+            try{
+              const { data } = await supabase.auth.getSession();
+              const session = data.session;
+              if (session && session.user && session.user.email){
+                const email = session.user.email;
+                const res = await fetch(`/api/founder?email=${encodeURIComponent(email)}`);
+                if (res.ok){
+                  const j = await res.json();
+                  founderId = j.founder && j.founder.id;
+                  if (founderId) {
+                    // reload with founder_id for convenience
+                    const u = new URL(window.location.href);
+                    u.searchParams.set('founder_id', founderId);
+                    window.location.replace(u.toString());
+                    return;
+                  }
+                }
+              }
+            }catch(err){
+              console.warn('Could not resolve session:', err);
+            }
+            overview.innerHTML = '<p>No founder context detected. <a href="/login.html">Log in</a> or <a href="/signup.html">create an account</a> to see your dashboard.</p>';
+            return;
+          }
+
+          try{
+            const res = await fetch(`/api/founder?id=${encodeURIComponent(founderId)}`);
+            if (!res.ok) throw new Error('Could not fetch founder');
+            const data = await res.json();
+            const f = data.founder;
+            const projects = data.projects || [];
+            overview.innerHTML = `
+              <p><strong>Email:</strong> ${f.email}</p>
+              <p><strong>Plan:</strong> ${f.plan}</p>
+              <p><strong>Stripe Customer ID:</strong> ${f.stripe_customer_id || '—'}</p>
+              <h3>Projects</h3>
+              <ul id="projList">${projects.map(p=>`<li><a href="/${p.slug}">${p.title || p.slug}</a> — slug: ${p.slug}</li>`).join('')}</ul>
+            `;
+          }catch(err){
+            console.error(err);
+            overview.innerHTML = '<p>Error loading founder data. Try again later.</p>';
+          }
+        })();
+      </script>
+    </section>
+  </body>
+</html>
