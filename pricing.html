@@ -1,71 +1,156 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Pricing — Waitlist.so</title>
-    <style>
-      body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;max-width:760px;margin:3rem auto;padding:0 1rem}
-      .plan{border:1px solid #e6e6e6;padding:1rem;border-radius:8px;margin-bottom:1rem}
-      .cta{display:inline-block;padding:.6rem 1rem;background:#1b4332;color:white;border-radius:6px;text-decoration:none}
-    </style>
-  </head>
-  <body>
-    <h1>Pricing</h1>
-    <p>Simple subscription plans for Waitlist.so.</p>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pricing — Frontlist</title>
+  <link rel="icon" href="/branding/frontlist-logo.svg" type="image/svg+xml">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#09090B; --surface:#18181B; --border:#27272A;
+      --text:#FAFAFA; --muted:#A1A1AA; --accent:#6366F1; --accent-h:#4F46E5;
+    }
+    body { font-family: system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+    a { color:inherit; text-decoration:none; }
+    nav {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1.25rem 2rem; border-bottom:1px solid var(--border);
+      position:sticky; top:0; background:rgba(9,9,11,.85); backdrop-filter:blur(12px); z-index:10;
+    }
+    .nav-links { display:flex; gap:2rem; align-items:center; }
+    .nav-links a { font-size:.9rem; color:var(--muted); transition:color .15s; }
+    .nav-links a:hover { color:var(--text); }
+    .nav-cta { background:var(--accent); color:#fff !important; padding:.45rem 1rem; border-radius:6px; font-size:.875rem !important; font-weight:500; transition:background .15s !important; }
+    .nav-cta:hover { background:var(--accent-h) !important; }
 
-    <div class="plan">
-      <h2>Free</h2>
-      <p>Up to 100 signups</p>
-      <a class="cta" href="#">Start for free</a>
+    .hero { text-align:center; padding:5rem 2rem 3rem; }
+    .hero h1 { font-size:2.5rem; font-weight:700; letter-spacing:-.03em; margin-bottom:.75rem; }
+    .hero p { color:var(--muted); font-size:1.05rem; }
+
+    .pricing-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:1.25rem; max-width:860px; margin:0 auto; padding:2rem 2rem 5rem;
+    }
+    .plan { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.75rem; position:relative; }
+    .plan.featured { border-color:var(--accent); }
+    .plan-badge {
+      position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+      background:var(--accent); color:#fff; font-size:.75rem; font-weight:600;
+      padding:.2rem .75rem; border-radius:999px; white-space:nowrap;
+    }
+    .plan-name { font-size:.8rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:.5rem; }
+    .plan-price { font-size:2rem; font-weight:700; letter-spacing:-.03em; margin-bottom:.25rem; }
+    .plan-price span { font-size:1rem; font-weight:400; color:var(--muted); }
+    .plan-desc { font-size:.875rem; color:var(--muted); margin-bottom:1.5rem; padding-bottom:1.5rem; border-bottom:1px solid var(--border); }
+    .plan-features { list-style:none; display:flex; flex-direction:column; gap:.6rem; margin-bottom:1.75rem; }
+    .plan-features li { font-size:.875rem; color:var(--muted); display:flex; gap:.5rem; }
+    .plan-features li::before { content:'✓'; color:#86EFAC; flex-shrink:0; }
+
+    .email-field { margin-bottom:.75rem; }
+    .email-field input {
+      width:100%; padding:.65rem .9rem; background:var(--bg); border:1.5px solid var(--border);
+      border-radius:8px; color:var(--text); font-size:.9rem; outline:none; transition:border-color .15s;
+    }
+    .email-field input::placeholder { color:#52525B; }
+    .email-field input:focus { border-color:var(--accent); }
+
+    .btn-plan {
+      display:block; width:100%; padding:.65rem; text-align:center; border-radius:8px;
+      font-size:.9rem; font-weight:600; cursor:pointer; border:1px solid var(--border);
+      background:transparent; color:var(--text); transition:background .15s, border-color .15s;
+    }
+    .btn-plan:hover { background:var(--border); }
+    .btn-plan.accent { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .btn-plan.accent:hover { background:var(--accent-h); border-color:var(--accent-h); }
+    .btn-plan:disabled { opacity:.6; cursor:default; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/"><img src="/branding/frontlist-logo.svg" alt="Frontlist" height="30" style="display:block"></a>
+  <div class="nav-links">
+    <a href="/#features">Features</a>
+    <a href="/login.html">Log in</a>
+    <a href="/signup.html" class="nav-cta">Get started</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Simple pricing</h1>
+  <p>Start free. Upgrade when you're ready.</p>
+</div>
+
+<div class="pricing-grid">
+  <div class="plan">
+    <div class="plan-name">Free</div>
+    <div class="plan-price">$0 <span>/ month</span></div>
+    <div class="plan-desc">Validate your idea before you invest.</div>
+    <ul class="plan-features">
+      <li>Up to 100 signups</li>
+      <li>Branded waitlist page</li>
+      <li>Dashboard overview</li>
+    </ul>
+    <a href="/signup.html" class="btn-plan">Start free</a>
+  </div>
+
+  <div class="plan featured">
+    <div class="plan-badge">Most popular</div>
+    <div class="plan-name">Pro</div>
+    <div class="plan-price">$19 <span>/ month</span></div>
+    <div class="plan-desc">For founders serious about their launch.</div>
+    <ul class="plan-features">
+      <li>Unlimited signups</li>
+      <li>Custom URL slug</li>
+      <li>Logo upload</li>
+      <li>Brand colours</li>
+      <li>Email notifications</li>
+      <li>CSV export</li>
+    </ul>
+    <div class="email-field">
+      <input type="email" id="buyer-email" placeholder="you@startup.com" autocomplete="email">
     </div>
+    <button class="btn-plan accent" id="stripe-btn">Get Pro — $19/mo</button>
+  </div>
 
-    <div class="plan">
-      <h2>Pro — $19 / month</h2>
-      <p>Unlimited signups, custom slug, logo upload, email notifications</p>
-      <!-- Email capture + button that calls the serverless function to create a Checkout session -->
-      <div style="margin-top:.5rem">
-        <label style="font-size:.9rem">Email for account<br /><input id="buyer-email" type="email" placeholder="you@startup.com" style="padding:.4rem;border:1px solid #ddd;border-radius:6px;width:100%" required></label>
-      </div>
-      <a class="cta" id="stripe-link" href="#" style="margin-top: .75rem; display:inline-block">Buy Pro ($19/mo)</a>
-    </div>
+  <div class="plan">
+    <div class="plan-name">Growth</div>
+    <div class="plan-price">$49 <span>/ month</span></div>
+    <div class="plan-desc">Scale your waitlist and track every referral.</div>
+    <ul class="plan-features">
+      <li>Everything in Pro</li>
+      <li>Custom domain</li>
+      <li>Referral tracking</li>
+      <li>Advanced analytics</li>
+    </ul>
+    <a href="/signup.html" class="btn-plan">Coming soon</a>
+  </div>
+</div>
 
-    <div class="plan">
-      <h2>Growth — $49 / month</h2>
-      <p>Custom domain, analytics, referral tracking</p>
-      <a class="cta" href="#">Buy Growth ($49/mo)</a>
-    </div>
-
-    <p style="margin-top:2rem;font-size:.9rem;color:#555">Note: The Pro button will create a Stripe Checkout session via a serverless function when deployed. Locally, run with environment vars set.</p>
-
-    <script>
-      document.getElementById('stripe-link').addEventListener('click', async function(e){
-        e.preventDefault();
-        const btn = e.currentTarget;
-        btn.textContent = 'Redirecting...';
-        btn.style.pointerEvents = 'none';
-        try {
-              const email = document.getElementById('buyer-email').value;
-              if (!email) throw new Error('Please enter your email');
-
-              const res = await fetch('/api/create-checkout-session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-              });
-          if (!res.ok) throw new Error('Failed to create checkout session');
-          const data = await res.json();
-          if (data.url) {
-            window.location = data.url;
-          } else {
-            throw new Error(data.error?.message || 'No session URL returned');
-          }
-        } catch (err) {
-          alert('Error creating Stripe Checkout session: ' + err.message);
-          btn.textContent = 'Buy Pro ($19/mo)';
-          btn.style.pointerEvents = '';
-        }
+<script>
+  document.getElementById('stripe-btn').addEventListener('click', async function() {
+    const btn   = this;
+    const email = document.getElementById('buyer-email').value.trim();
+    if (!email) { alert('Please enter your email first.'); return; }
+    btn.disabled = true;
+    btn.textContent = 'Redirecting…';
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
       });
-    </script>
-  </body>
+      if (!res.ok) throw new Error('Failed to create checkout session');
+      const data = await res.json();
+      if (data.url) { window.location = data.url; }
+      else throw new Error(data.error?.message || 'No session URL returned');
+    } catch (err) {
+      alert('Error: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = 'Get Pro — $19/mo';
+    }
+  });
+</script>
+</body>
 </html>

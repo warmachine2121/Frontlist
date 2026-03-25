@@ -102,7 +102,7 @@ function renderPage(project, count) {
       </div>
     </form>
     <div class="msg" id="wl-msg"></div>
-    <p class="powered">Powered by <a href="/" target="_blank">Frontlist</a></p>
+    <p class="powered">Powered by <a href="/" target="_blank"><img src="/branding/frontlist-logo.svg" alt="Frontlist" style="height:18px;vertical-align:middle;opacity:.5"></a></p>
   </div>
 
   <script>

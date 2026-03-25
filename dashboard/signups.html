@@ -1,20 +1,111 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Signups — Dashboard</title>
-    <style>body{font-family:system-ui;margin:2rem}</style>
-  </head>
-  <body>
-    <h1>Signups</h1>
-    <p>List of signups and export button placeholder.</p>
-    <button id="export">Export CSV</button>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Signups — Frontlist</title>
+  <link rel="icon" href="/branding/frontlist-logo.svg" type="image/svg+xml">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#09090B; --surface:#18181B; --border:#27272A; --text:#FAFAFA; --muted:#A1A1AA; --accent:#6366F1; }
+    body { font-family: system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+    a { color:inherit; text-decoration:none; }
+    nav { display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:10; }
+    .nav-left { display:flex; align-items:center; gap:2rem; }
+    .nav-links { display:flex; gap:1.5rem; }
+    .nav-links a { font-size:.875rem; color:var(--muted); transition:color .15s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--text); }
+    main { max-width:900px; margin:0 auto; padding:2.5rem 2rem; }
+    .top-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:2rem; }
+    h1 { font-size:1.5rem; font-weight:700; letter-spacing:-.02em; }
+    .btn { padding:.55rem 1rem; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:.875rem; font-weight:600; cursor:pointer; transition:opacity .15s; }
+    .btn:hover { opacity:.85; }
+    table { width:100%; border-collapse:collapse; }
+    th { font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; text-align:left; padding:.75rem 1rem; border-bottom:1px solid var(--border); }
+    td { padding:.85rem 1rem; border-bottom:1px solid var(--border); font-size:.9rem; color:var(--muted); }
+    td:first-child { color:var(--text); }
+    tr:last-child td { border-bottom:none; }
+    .empty { color:var(--muted); font-size:.9rem; padding:2rem 0; }
+    .table-wrap { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <a href="/"><img src="/branding/frontlist-logo.svg" alt="Frontlist" height="28" style="display:block"></a>
+      <div class="nav-links">
+        <a href="index.html">Overview</a>
+        <a href="customise.html">Customise</a>
+        <a href="signups.html" class="active">Signups</a>
+        <a href="notifications.html">Notifications</a>
+        <a href="billing.html">Billing</a>
+      </div>
+    </div>
+  </nav>
 
-    <script>
-      document.getElementById('export').addEventListener('click', function(){
-        alert('Implement CSV export from signups table');
-      });
-    </script>
-  </body>
+  <main>
+    <div class="top-row">
+      <h1>Signups</h1>
+      <button class="btn" id="export-btn">Export CSV</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Email</th><th>Signed up</th></tr></thead>
+        <tbody id="signups-body"><tr><td colspan="2" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    await import('/supabase-config.js');
+    const supabase = createClient(window.__SUPABASE_URL, window.__SUPABASE_ANON_KEY);
+
+    const params    = new URLSearchParams(window.location.search);
+    const founderId = params.get('founder_id');
+    const tbody     = document.getElementById('signups-body');
+    let allSignups  = [];
+
+    async function load() {
+      if (!founderId) { tbody.innerHTML = '<tr><td colspan="2" class="empty">No founder context. <a href="/login.html" style="color:#6366F1">Log in</a></td></tr>'; return; }
+      const res = await fetch(`/api/founder?id=${encodeURIComponent(founderId)}`);
+      if (!res.ok) { tbody.innerHTML = '<tr><td colspan="2" class="empty">Could not load data.</td></tr>'; return; }
+      const data     = await res.json();
+      const projects = data.projects || [];
+      if (!projects.length) { tbody.innerHTML = '<tr><td colspan="2" class="empty">No projects yet.</td></tr>'; return; }
+
+      const projectId = projects[0].id;
+      const sr = await fetch(`/api/founder?id=${encodeURIComponent(founderId)}`);
+      // Fetch signups directly from supabase
+      const { data: signups, error } = await supabase
+        .from('signups')
+        .select('email, created_at')
+        .eq('project_id', projectId)
+        .order('created_at', { ascending: false });
+
+      if (error || !signups?.length) {
+        tbody.innerHTML = '<tr><td colspan="2" class="empty">No signups yet.</td></tr>';
+        return;
+      }
+      allSignups = signups;
+      tbody.innerHTML = signups.map(s => `
+        <tr>
+          <td>${s.email}</td>
+          <td>${new Date(s.created_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}</td>
+        </tr>`).join('');
+    }
+
+    document.getElementById('export-btn').addEventListener('click', () => {
+      if (!allSignups.length) { alert('No signups to export.'); return; }
+      const csv  = 'Email,Signed Up\n' + allSignups.map(s => `${s.email},${s.created_at}`).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url  = URL.createObjectURL(blob);
+      const a    = Object.assign(document.createElement('a'), { href: url, download: 'signups.csv' });
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    load();
+  </script>
+</body>
 </html>

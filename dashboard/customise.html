@@ -3,9 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Customise Project — Dashboard</title>
+    <title>Customise — Frontlist</title>
+    <link rel="icon" href="/branding/frontlist-logo.svg" type="image/svg+xml">
     <style>
-      body{font-family:system-ui,Arial,Helvetica;margin:2rem;padding:0 1rem;max-width:840px}
+      :root{--bg:#09090B;--surface:#18181B;--border:#27272A;--text:#FAFAFA;--muted:#A1A1AA;--accent:#6366F1}
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      body{font-family:system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+      a{color:inherit;text-decoration:none}
+      nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:10}
+      .nav-left{display:flex;align-items:center;gap:2rem}
+      .nav-links{display:flex;gap:1.5rem}
+      .nav-links a{font-size:.875rem;color:var(--muted);transition:color .15s}
+      .nav-links a:hover,.nav-links a.active{color:var(--text)}
+      #content{max-width:840px;margin:0 auto;padding:2.5rem 2rem}
       label{display:block;margin-top:12px}
       input[type=text]{width:100%;padding:8px;border-radius:4px;border:1px solid #ddd}
       .row{display:flex;gap:12px}
@@ -15,7 +25,18 @@
     </style>
   </head>
   <body>
-    <h1>Customise your waitlist page</h1>
+    <nav>
+      <div class="nav-left">
+        <a href="/"><img src="/branding/frontlist-logo.svg" alt="Frontlist" height="28" style="display:block"></a>
+        <div class="nav-links">
+          <a href="index.html">Overview</a>
+          <a href="customise.html" class="active">Customise</a>
+          <a href="signups.html">Signups</a>
+          <a href="notifications.html">Notifications</a>
+          <a href="billing.html">Billing</a>
+        </div>
+      </div>
+    </nav>
     <div id="content">
       <p>Loading…</p>
     </div>

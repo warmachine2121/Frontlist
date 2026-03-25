@@ -1,18 +1,86 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Notifications — Dashboard</title>
-    <style>body{font-family:system-ui;margin:2rem}</style>
-  </head>
-  <body>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Notifications — Frontlist</title>
+  <link rel="icon" href="/branding/frontlist-logo.svg" type="image/svg+xml">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#09090B; --surface:#18181B; --border:#27272A; --text:#FAFAFA; --muted:#A1A1AA; --accent:#6366F1; }
+    body { font-family: system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+    a { color:inherit; text-decoration:none; }
+    nav { display:flex; align-items:center; gap:2rem; padding:1rem 2rem; border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:10; }
+    .nav-links { display:flex; gap:1.5rem; }
+    .nav-links a { font-size:.875rem; color:var(--muted); transition:color .15s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--text); }
+    main { max-width:640px; margin:0 auto; padding:2.5rem 2rem; }
+    h1 { font-size:1.5rem; font-weight:700; letter-spacing:-.02em; margin-bottom:2rem; }
+    .section { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:1.25rem; }
+    .section-title { font-size:.75rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; padding:1rem 1.5rem .75rem; border-bottom:1px solid var(--border); }
+    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; border-bottom:1px solid var(--border); }
+    .toggle-row:last-child { border-bottom:none; }
+    .toggle-label { font-size:.9rem; }
+    .toggle-desc { font-size:.8rem; color:var(--muted); margin-top:.2rem; }
+    .toggle { position:relative; width:40px; height:22px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; inset:0; background:var(--border); border-radius:999px; cursor:pointer; transition:background .2s; }
+    .slider::before { content:''; position:absolute; width:16px; height:16px; left:3px; top:3px; background:#fff; border-radius:50%; transition:transform .2s; }
+    input:checked + .slider { background:var(--accent); }
+    input:checked + .slider::before { transform:translateX(18px); }
+    .save-btn { margin-top:1.5rem; padding:.7rem 1.5rem; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:.9rem; font-weight:600; cursor:pointer; transition:opacity .15s; }
+    .save-btn:hover { opacity:.85; }
+    .msg { margin-top:.75rem; font-size:.85rem; color:#86EFAC; display:none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/"><img src="/branding/frontlist-logo.svg" alt="Frontlist" height="28" style="display:block"></a>
+    <div class="nav-links">
+      <a href="index.html">Overview</a>
+      <a href="customise.html">Customise</a>
+      <a href="signups.html">Signups</a>
+      <a href="notifications.html" class="active">Notifications</a>
+      <a href="billing.html">Billing</a>
+    </div>
+  </nav>
+
+  <main>
     <h1>Notifications</h1>
-    <form>
-      <label><input type="checkbox" checked /> Notify on every signup</label><br />
-      <label><input type="checkbox" /> Daily digest</label><br />
-      <label><input type="checkbox" checked /> Milestone alerts</label><br />
-      <button type="button" onclick="alert('Implement saving settings')">Save</button>
-    </form>
-  </body>
+    <div class="section">
+      <div class="section-title">Email alerts</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Every signup</div>
+          <div class="toggle-desc">Get an email each time someone joins your waitlist</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="notify-signup" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Daily digest</div>
+          <div class="toggle-desc">One summary email per day with new signups</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="notify-digest"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Milestone alerts</div>
+          <div class="toggle-desc">Notify me at 100, 500, and 1,000 signups</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="notify-milestones" checked><span class="slider"></span></label>
+      </div>
+    </div>
+    <button class="save-btn" id="save-btn">Save settings</button>
+    <div class="msg" id="msg">Settings saved.</div>
+  </main>
+
+  <script>
+    document.getElementById('save-btn').addEventListener('click', () => {
+      const msg = document.getElementById('msg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 2500);
+    });
+  </script>
+</body>
 </html>
