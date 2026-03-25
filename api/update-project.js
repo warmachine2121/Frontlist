@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
     const { project_id, title, slug, primary_color, accent_color } = body;
     if (!project_id) return res.status(400).json({ error: 'Missing project_id' });
 
-    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseUrl = process.env.SUPABASE_URL || 'https://dimbgpgciszsviucsvui.supabase.co';
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) {
       return res.status(500).json({ error: 'Supabase env vars not configured' });

@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: { message: 'Missing STRIPE_PRICE_PRO_ID env var' } });
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseUrl = process.env.SUPABASE_URL || 'https://dimbgpgciszsviucsvui.supabase.co';
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) {
       return res.status(500).json({ error: { message: 'Missing Supabase env vars' } });

@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
         const email = session.customer_details?.email || session.customer_email;
         const stripeCustomerId = session.customer;
 
-        const supabaseUrl = process.env.SUPABASE_URL;
+        const supabaseUrl = process.env.SUPABASE_URL || 'https://dimbgpgciszsviucsvui.supabase.co';
         const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
         if (!supabaseUrl || !serviceKey) {
           console.error('Missing Supabase env vars');
@@ -133,7 +133,7 @@ module.exports = async (req, res) => {
         // Subscription cancelled; downgrade plan
         const subscription = event.data.object;
         const stripeCustomerId = subscription.customer;
-        const supabaseUrl = process.env.SUPABASE_URL;
+        const supabaseUrl = process.env.SUPABASE_URL || 'https://dimbgpgciszsviucsvui.supabase.co';
         const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
         if (supabaseUrl && serviceKey && stripeCustomerId) {
           // Find founder by stripe_customer_id and set plan to 'free'

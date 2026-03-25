@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     const email = body.email && String(body.email).trim();
     if (!email) return res.status(400).json({ error: { message: 'Missing email in request body' } });
 
-    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseUrl = process.env.SUPABASE_URL || 'https://dimbgpgciszsviucsvui.supabase.co';
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) {
       return res.status(500).json({ error: { message: 'Missing Supabase env vars' } });

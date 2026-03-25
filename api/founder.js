@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     return res.status(405).send('Method Not Allowed');
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseUrl = process.env.SUPABASE_URL || 'https://dimbgpgciszsviucsvui.supabase.co';
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceKey) {
     return res.status(500).json({ error: 'Supabase env vars not configured' });

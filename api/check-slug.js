@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     const ignoreProjectId = req.query.project_id || null;
     if (!slug) return res.status(400).json({ available: false, reason: 'Missing slug' });
 
-    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseUrl = process.env.SUPABASE_URL || 'https://dimbgpgciszsviucsvui.supabase.co';
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) return res.status(500).json({ available: false, reason: 'Server not configured' });
 

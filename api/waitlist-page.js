@@ -154,7 +154,7 @@ module.exports = async (req, res) => {
   const slug = (req.query.slug || '').trim().toLowerCase();
   if (!slug) return res.status(400).send('Missing slug');
 
-  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseUrl = process.env.SUPABASE_URL || 'https://dimbgpgciszsviucsvui.supabase.co';
   const serviceKey  = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceKey) return res.status(500).send('Server misconfigured');
 
