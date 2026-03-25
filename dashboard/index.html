@@ -128,5 +128,17 @@
       }
     })();
   </script>
+<script>
+// Append founder_id to all nav links
+(function(){
+  const id = new URLSearchParams(window.location.search).get("founder_id");
+  if (!id) return;
+  document.querySelectorAll(".nav-links a").forEach(a=>{
+    const u = new URL(a.href, location.href);
+    u.searchParams.set("founder_id", id);
+    a.href = u.toString();
+  });
+})(); // nav-founder-fix
+</script>
 </body>
 </html>
