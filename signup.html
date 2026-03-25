@@ -1,52 +1,295 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Founder Signup — Waitlist.so</title>
-    <style>body{font-family:system-ui,Arial,Helvetica;margin:2rem;padding:0 1rem;max-width:700px}</style>
-  </head>
-  <body>
-    <h1>Create an account</h1>
-    <p>Sign up as a founder to create your waitlist page.</p>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Create account — Frontlist</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <form id="signupForm">
-      <label>Email<br /><input type="email" id="email" required /></label>
-      <label style="display:block;margin-top:.5rem">Password<br /><input type="password" id="password" required /></label>
-      <div style="margin-top:1rem">
-        <button type="submit">Create account</button>
+    :root {
+      --bg:      #09090B;
+      --surface: #18181B;
+      --border:  #27272A;
+      --text:    #FAFAFA;
+      --muted:   #A1A1AA;
+      --accent:  #6366F1;
+      --accent-h:#4F46E5;
+      --error:   #FCA5A5;
+      --success: #86EFAC;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-link {
+      font-size: .875rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .15s;
+    }
+
+    .nav-link:hover { color: var(--text); }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* Logo animation */
+    .logo-wrap {
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: emergeDown .6s cubic-bezier(.22,1,.36,1) .1s forwards;
+    }
+
+    .logo-wrap svg .bar-1 {
+      opacity: 0;
+      animation: barIn .4s cubic-bezier(.22,1,.36,1) .2s forwards;
+    }
+    .logo-wrap svg .bar-2 {
+      opacity: 0;
+      animation: barIn .4s cubic-bezier(.22,1,.36,1) .35s forwards;
+    }
+    .logo-wrap svg .bar-3 {
+      opacity: 0;
+      animation: barIn .4s cubic-bezier(.22,1,.36,1) .5s forwards;
+    }
+    .logo-wrap svg .wordmark {
+      opacity: 0;
+      animation: fadeIn .5s ease .55s forwards;
+    }
+
+    @keyframes emergeDown {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes barIn {
+      from { opacity: 0; transform: scaleX(0); transform-origin: left; }
+      to   { opacity: 1; transform: scaleX(1); transform-origin: left; }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.25rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      opacity: 0;
+      animation: emergeDown .6s cubic-bezier(.22,1,.36,1) .3s forwards;
+    }
+
+    .card h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: .4rem;
+    }
+
+    .card p {
+      font-size: .875rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    input {
+      padding: .7rem .9rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .15s;
+      width: 100%;
+    }
+
+    input::placeholder { color: #52525B; }
+    input:focus { border-color: var(--accent); }
+
+    .btn {
+      width: 100%;
+      padding: .75rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: .5rem;
+      transition: background .15s, opacity .15s;
+    }
+
+    .btn:hover { background: var(--accent-h); }
+    .btn:disabled { opacity: .6; cursor: default; }
+
+    .error-msg {
+      display: none;
+      font-size: .85rem;
+      color: var(--error);
+      margin-top: .75rem;
+      text-align: center;
+    }
+
+    .footer-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: .875rem;
+      color: var(--muted);
+    }
+
+    .footer-link a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer-link a:hover { text-decoration: underline; }
+
+    .terms {
+      font-size: .75rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Frontlist</a>
+    <a href="/login.html" class="nav-link">Already have an account? Log in →</a>
+  </nav>
+
+  <main>
+
+    <!-- Animated logo -->
+    <div class="logo-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" width="140" height="36" viewBox="0 0 140 36" fill="none">
+        <rect class="bar-1" x="0" y="6"  width="18" height="4" rx="2" fill="#6366F1"/>
+        <rect class="bar-2" x="0" y="14" width="13" height="4" rx="2" fill="#6366F1" opacity="0.7"/>
+        <rect class="bar-3" x="0" y="22" width="8"  height="4" rx="2" fill="#6366F1" opacity="0.4"/>
+        <text class="wordmark" x="26" y="26" font-family="system-ui,-apple-system,Segoe UI,Helvetica,Arial,sans-serif" font-weight="700" font-size="20" letter-spacing="-0.5" fill="#FAFAFA">Frontlist</text>
+      </svg>
+    </div>
+
+    <div class="card">
+      <h1>Create your account</h1>
+      <p>Start building your waitlist page for free.</p>
+
+      <form id="signupForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@startup.com" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Min. 8 characters" required autocomplete="new-password">
+        </div>
+        <button class="btn" type="submit" id="submit-btn">Create account</button>
+        <div class="error-msg" id="error-msg"></div>
+      </form>
+
+      <div class="footer-link">
+        Already have an account? <a href="/login.html">Log in</a>
       </div>
-    </form>
+      <p class="terms">By signing up you agree to our Terms of Service and Privacy Policy.</p>
+    </div>
 
-    <script type="module">
-      import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-      // load config shim
-      await import('/supabase-config.js');
-      const SUPABASE_URL = window.__SUPABASE_URL;
-      const SUPABASE_ANON_KEY = window.__SUPABASE_ANON_KEY;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </main>
 
-      const form = document.getElementById('signupForm');
-      form.addEventListener('submit', async (e)=>{
-        e.preventDefault();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        if (!email || !password) return alert('Email and password are required');
-        try{
-          const { data, error } = await supabase.auth.signUp({ email, password });
-          if (error) throw error;
-          // Create or fetch founder record via server endpoint
-          const cf = await fetch('/api/create-founder', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
-          if (!cf.ok) throw new Error('Could not create founder');
-          const jf = await cf.json();
-          const founderId = jf.id;
-          // Redirect to dashboard with founder context
-          window.location.href = `/dashboard/index.html?founder_id=${encodeURIComponent(founderId)}`;
-        }catch(err){
-          console.error(err);
-          alert(err.message || 'Signup error');
-        }
-      });
-    </script>
-  </body>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    await import('/supabase-config.js');
+    const supabase = createClient(window.__SUPABASE_URL, window.__SUPABASE_ANON_KEY);
+
+    const form    = document.getElementById('signupForm');
+    const btn     = document.getElementById('submit-btn');
+    const errorEl = document.getElementById('error-msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (password.length < 8) {
+        errorEl.textContent = 'Password must be at least 8 characters.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Creating account…';
+      errorEl.style.display = 'none';
+
+      try {
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+
+        const cf = await fetch('/api/create-founder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        if (!cf.ok) throw new Error('Could not create account');
+        const jf = await cf.json();
+
+        window.location.href = `/dashboard/index.html?founder_id=${encodeURIComponent(jf.id)}`;
+      } catch (err) {
+        console.error(err);
+        errorEl.textContent = err.message || 'Signup failed. Please try again.';
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Create account';
+      }
+    });
+  </script>
+
+</body>
 </html>
